@@ -4,8 +4,8 @@
   "scripts": {
     "start": "npm run build:demo && beefy ./index.js --cwd=./demo",
     "prebuild": "rimraf dist && mkdirp dist",
-    "build": "browserify index.js -s moment-parse-natural -i moment -o dist/moment-parse-natural.js",
-    "build:demo": "browserify index.js -s moment-parse-natural -i moment -o demo/moment-parse-natural.js",
+    "build": "browserify index.js -s moment-parse-natural -r moment -o dist/moment-parse-natural.js",
+    "build:demo": "browserify index.js -s moment-parse-natural -r moment -o demo/moment-parse-natural.js",
     "deploy": "npm run build:demo && npm run deploydocs",
     "predeploydocs": "./bin/authorize-push.js",
     "deploydocs": "gh-pages-deploy",
