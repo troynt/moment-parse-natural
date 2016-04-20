@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>moment.parseNatural – a moment.js plugin</title>
+
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/editable-table/dist/editable-table.css">
+  <style>
+  html, body { padding: 0; margin: 0; font-family: Helvetica, Arial; }
+  .main { padding: 18px; }
+  h1 { margin: 0; font-size: 28px; font-weight: bold; }
+  h6 { margin: 0; }
+  header { padding: 18px 18px 24px; background: #222; color: #fff; background-image: linear-gradient(90deg, #2C2A86 20.5%, #078D2D 20.5%, #078D2D 37.5%, #FCB20D 37.5%, #FCB20D 55.5%, #EC5100 55.5%, #EC5100 72.5%, #6A3C06 72.5%, #6A3C06 79.5%, #C01C1B 79.5%); /* hoodie hoodie hoodie! */ background-size: 300px 6px; background-repeat: repeat-x; background-position: 0 100%; }
+  header a { color: #fff !important; }
+  table { margin: 24px 0 0; }
+  var { font-style: normal;}
+  p.info { padding: 0; margin: 0; font-size: 10px; color: #888; }
+  p.info a { color: inherit; text-decoration: underline; }
+  td:first-child, th:first-child { padding-left: 0 !important; }
+  tr:last-child a { display: none; }
+  th {width: 30%; white-space: nowrap; }
+  td:last-child, th:last-child { width: 120px; text-align: right; }
+  .error var[name=check] { color: #c00;}
+  td, th { cursor: default !important; }
+  .report { display: none; }
+  tr:hover .report, .error .report {display: inline;}
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>moment.parseNatural</h1>
+  </header>
+
+  <div class="main">
+    <h3>The what? And the why?</h3>
+    <p>
+      moment.parseNatural is a plugin for <a href="http://momentjs.com/">moment.js</a>, that adds natural language parsing to moment.
+    </p>
+    <p>
+      Here are some examples. Play with them or add new ones. If you find a problem, <a href="https://github.com/troynt/moment-parse-natural/issues/new">please report</a>
+    </p>
+    <table data-editable data-editable-spy class="table">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Parsed</th>
+          <th>Found a bug?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input name="test" placeholder="add your test">
+          </td>
+          <td>
+            <var name="parsed"></var>
+          </td>
+          <td>
+            <a href="#" class="report">report</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="info">
+      <strong>Note:</strong> This demo is using the <a href="https://github.com/gr2m/bootstrap-editable-table">Bootstrap Editable Table</a>
+      plugin for auto-adding of new rows, and for styling.
+    </p>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://npmcdn.com/editable-table/dist/editable-table.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <script src="moment-parse-natural.js"></script>
+  <script>
+  $(document.body).on('input', 'input', function(event) {
+    var $row = $(event.target).closest('tr');
+    var test = event.target.value;
+    var parsed = moment.parseNatural(test);
+    var check = parsed.fromNow();
+    var $parsed = $row.find('[name="parsed"]');
+    var $check = $row.find('[name="check"]');
+
+    $parsed.text(parsed);
+    $check.text(test);
+
+    //console.log(check, test)
+
+    //$row.toggleClass('error', check.toLowerCase() !== test.toLowerCase());
+  });
+  $('table').on('click', '.report', function(event) {
+    event.preventDefault();
+    var test = $(event.target).closest('tr').find('[name=test]').val();
+    var format = $(event.target).closest('tr').find('[name=format]').text();
+    var url = 'https://github.com/troynt/moment-parse-natural/issues/new?title='+test+' → '+format+'&body=`moment.parseNatural(\''+test+'\')` parsed to `'+format+'`, I expected: `<please fill in>`'
+    window.open(url);
+  })
+
+  var $table = $('table');
+  var tests = [
+    'yesterday',
+    'today',
+    '1 hour ago',
+    'tomorrow',
+    '2 days',
+    '1 week ago',
+  ];
+  $table.editableTable('add', tests.map(function(test) { return {test: test} }));
+  $table.find('tbody tr:not(:last-child) input').trigger('input');
+  </script>
+</body>
+</html>
