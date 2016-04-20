@@ -60,7 +60,7 @@ function parseNatural (string) {
     }
     return moment().add(amount, unit)
   }
-  
+
   var moment_parsed = moment(string)
   if ( moment_parsed.isValid() ) {
     return moment_parsed
@@ -70,7 +70,6 @@ function parseNatural (string) {
 
   var i = words.length
   while (i-- && !month) {
-    console.log("word:", words[i])
     month = local_data.monthsParse(words[i]) || false
     if (month ) {
       words.splice(i, 1)
