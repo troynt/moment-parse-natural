@@ -12,7 +12,7 @@ var moment = require('moment')
 module.exports = parseNatural
 
 function parseNatural (string) {
-  if (string.match('tod(ay)?')) {
+  if (string.match('tod(ay)?') || string.match('now')) {
     return moment()
   }
   if (string.match('tom(orrow)?')) {
