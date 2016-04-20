@@ -5,6 +5,17 @@ var moment = require('moment')
 
 moment.parseNatural = require('../index')
 
+test('absolute dates', function (t) {
+  var days = [
+    '2016/04/25',
+    '2010/03/03'
+  ]
+  for (var i = 0; i < days.length; i++) {
+    t.equals(moment.parseNatural(days[i]).format('YYYY/MM/DD'), days[i], days[i])
+  }
+  t.end()
+})
+
 test('today', function (t) {
   t.equal(moment.parseNatural('today').format('MM/DD/YYYY'), moment().format('MM/DD/YYYY'), 'today')
   t.equal(moment.parseNatural('tod').format('MM/DD/YYYY'), moment().format('MM/DD/YYYY'), 'today')
