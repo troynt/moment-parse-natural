@@ -29,8 +29,8 @@ function parseNatural (string) {
   var is_subtracting
   var amount
   var matches
-  var words = string.split(' ')
-  var i = words.length
+  var words = string.split(/(\s+|\b)/)
+
   var d
 
   // attempt to match things like last year, 30 seconds ago, next week, etc.
@@ -60,13 +60,25 @@ function parseNatural (string) {
     }
     return moment().add(amount, unit)
   }
+  
+  var moment_parsed = moment(string)
+  if ( moment_parsed.isValid() ) {
+    return moment_parsed
+  }
 
-  while (i-- && month === false) {
-    month = moment.localeData(moment.locale()).monthsParse(words[i])
-    if (month) {
+  var local_data = moment.localeData(moment.locale())
+
+  var i = words.length
+  while (i-- && !month) {
+    console.log("word:", words[i])
+    month = local_data.monthsParse(words[i]) || false
+    if (month ) {
       words.splice(i, 1)
+      break
     }
   }
+
+
 
   i = words.length
   while (i--) {
